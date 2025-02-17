@@ -1,0 +1,47 @@
+/**
+ * Configure Tailwind v4 in this file using CSS variables and directives:
+ * https://tailwindcss.com/blog/tailwindcss-v4-alpha#css-first-configuration
+ */
+
+@import 'tailwindcss';
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+
+@theme {
+  --color-main-pink: #FFCCEC;
+  --color-main-green: #D5E882;
+  --color-dark-pink: #FF87C6;
+  --color-dark-pink-two: #F73E9F;
+  --color-main-gray: #3C3C4399;
+
+  --font-family-commissioner: 'Commissioner';
+  --font-family-fraunces: 'Fraunces';
+  --font-family-nunito: 'Nunito';
+  --font-family-noto: 'Noto Sans';
+
+  --spacing-main: 8%;
+}
+
+@layer utilities {
+  .bg-wavy-pattern {
+    background-color: #FFCCEC;
+    background-position: center;
+    background-image: url('/public/backgroundPattern.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
