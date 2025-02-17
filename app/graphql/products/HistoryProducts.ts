@@ -1,5 +1,5 @@
 export const PRODUCT_VARIANT_FRAGMENT = `#graphql
-  fragment ProductVariant on ProductVariant {
+  fragment HistoryProductVariant on ProductVariant {
     availableForSale
     compareAtPrice {
       amount
@@ -59,7 +59,7 @@ const PRODUCT_FRAGMENT = `#graphql
     }
     variants(first: 1) {
       nodes {
-        ...ProductVariant
+        ...HistoryProductVariant
       }
     }
     seo {

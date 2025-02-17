@@ -35,7 +35,7 @@ export const GET_CATEGORY_PRODUCTS = `#graphql
     handle
     productType
     description
-    images(first: 10) {
+    images(first: 1) {
       edges {
         node {
           id

@@ -182,7 +182,7 @@ function FiltersAside({vendors, productTypes, maxPrice}: FiltersAsideProps) {
 }
 
 const NEW_PRODUCT_VARIANT_FRAGMENT = `#graphql
-fragment NewProductVariant on ProductVariant {
+fragment SearchNewProductVariant on ProductVariant {
     availableForSale
     compareAtPrice {
         amount
@@ -235,7 +235,7 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
       }
       variants(first: 1) {
           nodes {
-              ...NewProductVariant
+              ...SearchNewProductVariant
           }
       }
       seo {

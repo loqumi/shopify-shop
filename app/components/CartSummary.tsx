@@ -5,14 +5,14 @@ import React, {useRef, useState} from 'react';
 import {type FetcherWithComponents, Link} from '@remix-run/react';
 import {CartProgressBar} from '~/components/CartProgressBar';
 import AvocadoIcon from '~/ui/AvocadoIcon';
-import ProductItem from '~/components/ProductItem';
+import type {CustomerPointsFragment} from 'customer-accountapi.generated';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
   layout: CartLayout;
   totalAvocados: number;
   prevAvocados: number;
-  newAvocados: number;
+  customer: CustomerPointsFragment | null | undefined;
 };
 
 export function CartSummary({
@@ -20,11 +20,17 @@ export function CartSummary({
   layout,
   prevAvocados,
   totalAvocados,
-  newAvocados,
+  customer,
 }: CartSummaryProps) {
   const [promocode, setPromocode] = useState('');
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+
+  const totalBonusPoints = cart.lines.nodes.reduce((acc, node) => {
+    const value = Number(node.merchandise.product.metafield?.value);
+
+    return acc + (isNaN(value) ? 0 : value); // Only add if value is a number
+  }, 0);
 
   return (
     <>
@@ -54,13 +60,13 @@ export function CartSummary({
                     }
                     data={cart.cost?.subtotalAmount}
                   />
-                  {newAvocados && (
+                  {totalBonusPoints > 0 && customer !== null && (
                     <div
                       className={
                         'max-md:flex hidden flex font-noto h-[33px] font-semibold bg-main-green p-2 items-center rounded-full'
                       }
                     >
-                      +{newAvocados}&nbsp;
+                      +{totalBonusPoints}&nbsp;
                       <AvocadoIcon color={'pink'} />
                     </div>
                   )}
@@ -71,16 +77,19 @@ export function CartSummary({
             </dd>
           </dl>
           <CartCheckoutActions
-            newAvocados={newAvocados}
+            customer={customer}
+            newAvocados={totalBonusPoints}
             checkoutUrl={cart.checkoutUrl}
           />
         </div>
       </div>
-      <CartProgressBar
-        totalAvocados={totalAvocados}
-        prevAvocados={prevAvocados}
-        newAvocados={newAvocados}
-      />
+      {customer !== null && (
+        <CartProgressBar
+          totalAvocados={totalAvocados}
+          prevAvocados={prevAvocados}
+          newAvocados={totalBonusPoints}
+        />
+      )}
     </>
   );
 }
@@ -88,9 +97,11 @@ export function CartSummary({
 function CartCheckoutActions({
   checkoutUrl,
   newAvocados,
+  customer,
 }: {
   checkoutUrl?: string;
-  newAvocados?: number;
+  newAvocados: number;
+  customer: CustomerPointsFragment | null | undefined;
 }) {
   if (!checkoutUrl) return null;
 
@@ -105,7 +116,7 @@ function CartCheckoutActions({
       >
         <p>Checkout</p>
       </Link>
-      {newAvocados && (
+      {newAvocados > 0 && customer !== null && (
         <div
           className={
             'max-md:hidden flex font-noto h-[33px] font-semibold bg-main-green p-2 items-center rounded-full'

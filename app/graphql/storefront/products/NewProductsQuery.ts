@@ -1,11 +1,13 @@
 const NEW_PRODUCT_FRAGMENT = `#graphql
-  fragment ProductVariant on ProductVariant {
+  fragment NewProductVariant on ProductVariant {
+    id
     availableForSale
+    sku
+    title
     compareAtPrice {
       amount
       currencyCode
     }
-    id
     image {
       __typename
       id
@@ -26,8 +28,6 @@ const NEW_PRODUCT_FRAGMENT = `#graphql
       name
       value
     }
-    sku
-    title
     unitPrice {
       amount
       currencyCode
@@ -40,7 +40,7 @@ const NEW_PRODUCT_FRAGMENT = `#graphql
     handle
     variants(first: 1) {
       nodes {
-        ...ProductVariant
+        ...NewProductVariant
       }
     }
     seo {
@@ -73,7 +73,7 @@ export const NEW_PRODUCTS_QUERY = `#graphql
     $language: LanguageCode
     $first: Int
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+    products(first: $first, sortKey: CREATED_AT, reverse: true, query: "NOT product_type:'gift card'") {
       nodes {
         ...NewProduct
       }

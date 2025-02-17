@@ -10,7 +10,11 @@ const categories: CategoryItemType[] = [
   {icon: '/discount-category-icon.svg', title: 'Discounts', link: ''},
   {icon: '/avocado-category-icon.svg', title: 'Fashion jewelry', link: ''},
   {icon: '/home-category-icon.svg', title: 'Avocard', link: ''},
-  {icon: '/card-category-icon.svg', title: 'Gift cards', link: ''},
+  {
+    icon: '/card-category-icon.svg',
+    title: 'Gift cards',
+    link: '/catalog/Gift%20Cards',
+  },
   {icon: '/fire-category-icon.svg', title: 'Hot', link: ''},
   {icon: '/heart-category-icon.svg', title: 'For me', link: ''},
   {icon: '/points-category-icon.svg', title: 'Подарки за баллы', link: ''},

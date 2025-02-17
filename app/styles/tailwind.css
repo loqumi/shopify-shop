@@ -20,13 +20,12 @@
   animation: fade-in 0.3s ease-out;
 }
 
-
 @theme {
-  --color-main-pink: #FFCCEC;
-  --color-main-green: #D5E882;
-  --color-dark-pink: #FF87C6;
-  --color-dark-pink-two: #F73E9F;
-  --color-main-gray: #3C3C4399;
+  --color-main-pink: #ffccec;
+  --color-main-green: #d5e882;
+  --color-dark-pink: #ff87c6;
+  --color-dark-pink-two: #f73e9f;
+  --color-main-gray: #3c3c4399;
 
   --font-family-commissioner: 'Commissioner';
   --font-family-fraunces: 'Fraunces';
@@ -38,9 +37,9 @@
 
 @layer utilities {
   .bg-wavy-pattern {
-    background-color: #FFCCEC;
+    background-color: #ffccec;
     background-position: center;
-    background-image: url('/public/backgroundPattern.png');
+    background-image: url('/backgroundPattern.png');
     background-size: cover;
     background-repeat: no-repeat;
   }

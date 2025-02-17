@@ -85,11 +85,10 @@ export default function AccountLayout() {
             <div className="flex items-center justify-between mb-6 gap-8">
               <div>
                 <h1 className="font-bold !text-xl">
-                  {customerMetafields.phone &&
-                    formatPhoneNumber(
-                      customerMetafields.phone &&
-                        customer.phoneNumber?.phoneNumber,
-                    )}
+                  {formatPhoneNumber(
+                    customerMetafields.phone ??
+                      customer.phoneNumber?.phoneNumber,
+                  ) ?? ''}
                 </h1>
                 <h1 className="font-bold !text-xl">
                   {customer.emailAddress?.emailAddress ?? ''}

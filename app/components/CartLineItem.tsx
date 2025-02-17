@@ -104,7 +104,7 @@ function CartLineQuantity({
   const {id: lineId, quantity, isOptimistic} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
-  const itemAvocados = 15;
+  const bonusPointsAmount = line.merchandise.product.metafield?.value;
 
   return (
     <div className="flex justify-between items-center md:min-w-[250px]">
@@ -157,13 +157,13 @@ function CartLineQuantity({
         }
       >
         <ProductPrice price={line?.cost?.totalAmount} />
-        {itemAvocados && (
+        {bonusPointsAmount && (
           <div
             className={
               'flex absolute max-md:bottom-[40px] max-md:right-0 bottom-[20%] font-noto h-[33px] font-semibold bg-main-green p-2 items-center rounded-full'
             }
           >
-            +{itemAvocados}&nbsp;
+            +{bonusPointsAmount}&nbsp;
             <AvocadoIcon color={'pink'} />
           </div>
         )}

@@ -47,6 +47,9 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          metafield(key: "bonus_points", namespace: "product") {
+            value
+          }
         }
         selectedOptions {
           name

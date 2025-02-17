@@ -445,6 +445,28 @@ export type CustomerOrdersQuery = {
   };
 };
 
+export type CustomerPointsFragment = {
+  metafields: Array<
+    CustomerAccountAPI.Maybe<
+      Pick<CustomerAccountAPI.Metafield, 'key' | 'value'>
+    >
+  >;
+};
+
+export type CustomerPointsQueryVariables = CustomerAccountAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type CustomerPointsQuery = {
+  customer: {
+    metafields: Array<
+      CustomerAccountAPI.Maybe<
+        Pick<CustomerAccountAPI.Metafield, 'key' | 'value'>
+      >
+    >;
+  };
+};
+
 export type CustomerUpdateMutationVariables = CustomerAccountAPI.Exact<{
   customer: CustomerAccountAPI.CustomerUpdateInput;
 }>;
@@ -507,6 +529,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  #graphql\n  fragment CustomerOrders on Customer {\n    orders(\n      sortKey: PROCESSED_AT,\n      reverse: true,\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor\n    ) {\n      nodes {\n        ...OrderItem\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        endCursor\n        startCursor\n      }\n    }\n  }\n  #graphql\n  fragment OrderItem on Order {\n    lineItems(first: 10) {\n      nodes {\n        productId\n      }\n    }\n  }\n\n\n  query CustomerOrders(\n    $endCursor: String\n    $first: Int\n    $last: Int\n    $startCursor: String\n  ) {\n    customer {\n      ...CustomerOrders\n    }\n  }\n': {
     return: CustomerOrdersQuery;
     variables: CustomerOrdersQueryVariables;
+  };
+  '#graphql\n  fragment CustomerPoints on Customer {\n    metafields(\n      identifiers: [\n        { namespace: "card", key: "bonus_points" }\n        { namespace: "card", key: "discount" }\n      ]\n    ) {\n      key\n      value\n    }\n  }\n\n  query CustomerPoints {\n    customer {\n      ...CustomerPoints\n    }\n  }\n': {
+    return: CustomerPointsQuery;
+    variables: CustomerPointsQueryVariables;
   };
 }
 

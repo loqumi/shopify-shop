@@ -35,7 +35,7 @@ export default function ProductItemUpdated(props: Props) {
   const discount = calculateDiscount(currentPrice, noDiscountPrice);
 
   return (
-    <div className="flex flex-col min-w-[140px] max-w-[300px] flex-[1]">
+    <div className="flex flex-col min-w-[140px] flex-[1]">
       <div className="relative">
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {discount > 0 && <DiscountIcon discount={Math.round(discount)} />}

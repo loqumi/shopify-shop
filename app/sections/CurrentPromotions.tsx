@@ -24,7 +24,7 @@ export default function CurrentPromotions({
 
         <Link
           className="flex items-center gap-2.5 absolute right-0 top-0 h-full"
-          to="/collections"
+          to="/collections/promotions"
         >
           <p className="!font-bold lg:hidden">more</p>
           <p className="!font-bold hidden lg:block uppercase">all promotions</p>
@@ -40,7 +40,7 @@ export default function CurrentPromotions({
 
       {/* grid */}
       <div className="grid lg:grid-cols-[1.5fr_1fr] gap-6">
-        <CurrentPromotionCard promotion={promotions[0]} />
+        <CurrentPromotionCard promotion={promotions[3]} />
 
         <div className="hidden gap-6 lg:flex">
           {featuredProducts.slice(0, 2).map((product) => (

@@ -16,8 +16,9 @@ import {
   type ActionFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {DISCOUNTS_QUERY} from '~/graphql/admin-api/queries/discountsQuery';
-import {NEW_PRODUCTS_QUERY} from '~/graphql/storefront/products/NewProductsQuery';
 import type {GetAutomaticDiscountsQuery} from '~/graphql/admin-api/types';
+import {NEW_PRODUCTS_QUERY} from '~/graphql/storefront/products/NewProductsQuery';
+import {CUSTOMER_POINTS_QUERY} from '~/graphql/customer-account/CustomerPointsQuery';
 
 export const meta: MetaFunction = () => {
   return [{title: `Hydrogen | Cart`}];
@@ -30,18 +31,25 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const {admin} = context;
+  const {admin, customerAccount} = context;
 
-  const [{data: discounts}, {products}] = await Promise.all([
+  const [{data: discounts}, {products}, customer] = await Promise.all([
     admin.request<GetAutomaticDiscountsQuery>(DISCOUNTS_QUERY),
+
     context.storefront.query(NEW_PRODUCTS_QUERY, {
       variables: {
         first: 4,
       },
     }),
+
+    customerAccount
+      .isLoggedIn()
+      .then((loggedIn) =>
+        loggedIn ? customerAccount.query(CUSTOMER_POINTS_QUERY) : null,
+      ),
   ]);
 
-  return {discounts, recommendedProducts: products.nodes};
+  return {discounts, recommendedProducts: products.nodes, customer};
 }
 
 export async function action({request, context}: ActionFunctionArgs) {
@@ -130,7 +138,8 @@ export async function action({request, context}: ActionFunctionArgs) {
 
 export default function Cart() {
   const rootData = useRouteLoaderData<RootLoader>('root');
-  const {discounts, recommendedProducts} = useLoaderData<typeof loader>();
+  const {discounts, recommendedProducts, customer} =
+    useLoaderData<typeof loader>();
   if (!rootData) return null;
 
   return (
@@ -147,6 +156,7 @@ export default function Cart() {
                 cart={cart}
                 recommendedProducts={recommendedProducts}
                 discounts={discounts as GetAutomaticDiscountsQuery}
+                customer={customer?.data.customer}
               />
             );
           }}

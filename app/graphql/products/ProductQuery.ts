@@ -38,6 +38,14 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
 ` as const;
 
 const PRODUCT_FRAGMENT = `#graphql
+  fragment Image on ImageConnection {
+    edges {
+      node {
+        id
+        url
+      }
+    }
+  }
   fragment Product on Product {
     id
     title
@@ -47,6 +55,16 @@ const PRODUCT_FRAGMENT = `#graphql
     publishedAt
     descriptionHtml
     description
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
     metafields(
       identifiers: [
         { namespace: "product", key: "ingredients" },
@@ -57,12 +75,7 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     images(first: 10) {
-      edges {
-        node {
-          id
-          url
-        }
-      }
+      ...Image
     }
     options {
       name

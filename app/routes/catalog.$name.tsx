@@ -1,6 +1,7 @@
 import {useLoaderData} from '@remix-run/react';
 import {getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import CardItem from '~/components/CardItem';
 import ProductItemUpdated from '~/components/ProductItemUpdated';
 import {GET_CATEGORY_PRODUCTS} from '~/graphql/storefront/products/GetCategoryProductsQuery';
 import PrevRouteButton from '~/ui/PrevRouteButton';
@@ -40,6 +41,10 @@ export async function loader(args: LoaderFunctionArgs) {
 export default function CatalogProducts() {
   const {name, storefrontData} = useLoaderData<typeof loader>();
 
+  const gridLayoutClassName =
+    'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1.5 gap-y-8';
+  const cardsLayoutClassName = 'flex gap-1.5 flex-wrap';
+
   return (
     <div>
       <PrevRouteButton title="menu" to="/catalog" className="!my-10 !p-0" />
@@ -54,27 +59,43 @@ export default function CatalogProducts() {
             <PreviousLink className="text-center">
               {isLoading ? 'Loading...' : 'Load previous products'}
             </PreviousLink>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1.5 gap-y-8">
-              {nodes.map((product) => (
-                <ProductItemUpdated
-                  hasCartButton
-                  key={product.id}
-                  handle={product.handle}
-                  firstVariant={product.variants?.nodes[0]}
-                  title={product.title}
-                  image={product.images?.edges[0]?.node?.url || ''}
-                  vendor={product.vendor}
-                  currentPrice={Number(
-                    product.variants?.nodes[0].price?.amount || 0,
-                  )}
-                  noDiscountPrice={Number(
-                    product.variants?.nodes[0].compareAtPrice?.amount || 0,
-                  )}
-                  currencyCode={
-                    product.variants?.nodes[0].price?.currencyCode || 'EUR'
-                  }
-                />
-              ))}
+            <div
+              className={
+                name === 'Gift Cards'
+                  ? cardsLayoutClassName
+                  : gridLayoutClassName
+              }
+            >
+              {nodes.map((product) =>
+                product.productType === 'gift card' ? (
+                  <CardItem
+                    key={product.id}
+                    handle={product.handle}
+                    amount={Number(
+                      product.variants?.nodes[0].price?.amount || 0,
+                    )}
+                  />
+                ) : (
+                  <ProductItemUpdated
+                    hasCartButton
+                    key={product.id}
+                    handle={product.handle}
+                    firstVariant={product.variants?.nodes[0]}
+                    title={product.title}
+                    image={product.images?.edges[0]?.node?.url || ''}
+                    vendor={product.vendor}
+                    currentPrice={Number(
+                      product.variants?.nodes[0].price?.amount || 0,
+                    )}
+                    noDiscountPrice={Number(
+                      product.variants?.nodes[0].compareAtPrice?.amount || 0,
+                    )}
+                    currencyCode={
+                      product.variants?.nodes[0].price?.currencyCode || 'EUR'
+                    }
+                  />
+                ),
+              )}
             </div>
             <NextLink className="text-center">
               {isLoading ? 'Loading...' : 'Load next products'}

@@ -7,9 +7,10 @@ import type {
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
 import type {GetAutomaticDiscountsQuery} from '~/graphql/admin-api/types';
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import ProductItemUpdated from '~/components/ProductItemUpdated';
+import type {CustomerPointsFragment} from 'customer-accountapi.generated';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -18,6 +19,7 @@ export type CartMainProps = {
   layout: CartLayout;
   discounts?: GetAutomaticDiscountsQuery;
   recommendedProducts: NewProductFragment[];
+  customer: CustomerPointsFragment | null | undefined;
 };
 
 type ProductNode = {
@@ -40,6 +42,7 @@ export function CartMain({
   cart: originalCart,
   discounts,
   recommendedProducts,
+  customer,
 }: CartMainProps) {
   const cart = useOptimisticCart(originalCart);
   const [eligibleFreeGifts, setEligibleFreeGifts] = useState<ProductNode[][]>(
@@ -101,8 +104,7 @@ export function CartMain({
 
         if (
           meetsRequirement &&
-          customerGets.items.__typename === 'DiscountProducts' &&
-          customerGets.items.products.nodes[0]
+          customerGets.items.__typename === 'DiscountProducts'
         ) {
           groupedFreeGifts.push(customerGets.items.products.nodes);
         }
@@ -130,10 +132,17 @@ export function CartMain({
   }, [cart?.lines?.nodes, cart?.cost, discounts]);
 
   // Расчет баллов
+  const customerMetafields: {bonus_points: number; discount: number} =
+    customer &&
+    Object.fromEntries(
+      customer.metafields.map((item) => {
+        const key = item?.key === null ? '' : item?.key;
+        return [key, Number(item?.value)];
+      }),
+    );
 
+  //todo figure out where to get this number from and what to do with it
   const totalAvocados = 600;
-  const prevAvocados = 150;
-  const newAvocados = 30;
 
   return (
     <div className={`${className} bg-main-pink min-h-[100vh] p-6 md:p-12`}>
@@ -155,7 +164,7 @@ export function CartMain({
 
             <ul className="flex gap-8 rounded-xl bg-main-green !p-8 max-lg:flex-col">
               {eligibleFreeGifts.flat().map((gift) => (
-                <li key={gift.id} className="flex gap-4 max-w-[300px]">
+                <li key={gift.id} className="flex gap-4">
                   <img
                     className={
                       'rounded-[46%] min-w-[112px] max-w-[112px] min-h-[112px] max-h-[112px]'
@@ -194,13 +203,15 @@ export function CartMain({
 
         {cartHasItems && (
           <>
+            {/* todo get this check further down the component*/}
             <CartSummary
-              newAvocados={newAvocados}
-              prevAvocados={prevAvocados}
+              customer={customer}
+              prevAvocados={customerMetafields?.bonus_points}
               totalAvocados={totalAvocados}
               cart={cart}
               layout={layout}
             />
+
             <div className="max-md:hidden grid grid-cols-2 mt-12 md:grid-cols-4 gap-12">
               {recommendedProducts?.map((product) => (
                 <ProductItemUpdated

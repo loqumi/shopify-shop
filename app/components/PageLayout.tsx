@@ -6,7 +6,6 @@ import type {
   HeaderQuery,
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
-import {CartMain} from '~/components/CartMain';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {Modal} from '~/components/SearchModal';
@@ -39,7 +38,7 @@ export function PageLayout({
       <Modal.Provider>
         <Aside.Provider>
           <CartProviderProduct>
-            <CartAside cart={cart} />
+            {/* <CartAside cart={cart} /> */}
             <SearchModal />
             <MobileMenuAside
               cart={cart}
@@ -69,19 +68,19 @@ export function PageLayout({
   );
 }
 
-function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
-  return (
-    <Aside type="cart" heading="cart">
-      <Suspense fallback={<p>Loading cart ...</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
-    </Aside>
-  );
-}
+// function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
+//   return (
+//     <Aside type="cart" heading="cart">
+//       <Suspense fallback={<p>Loading cart ...</p>}>
+//         <Await resolve={cart}>
+//           {(cart) => {
+//             return <CartMain cart={cart} layout="aside" />;
+//           }}
+//         </Await>
+//       </Suspense>
+//     </Aside>
+//   );
+// }
 
 function MobileMenuAside({
   header,

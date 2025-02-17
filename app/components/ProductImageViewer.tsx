@@ -1,6 +1,7 @@
+import type {Maybe} from '@shopify/hydrogen/storefront-api-types';
 import {PhotoProvider, PhotoView} from 'react-photo-view';
 
-type NodeType = {url: string; id: string};
+type NodeType = {url: string; id?: Maybe<string> | undefined};
 
 type Props = {
   images: {node: NodeType}[];

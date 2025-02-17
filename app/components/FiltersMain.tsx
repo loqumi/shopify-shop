@@ -99,7 +99,7 @@ export function FiltersMain({
     const sortedItems = [...items].sort();
     const grouped: {[key: string]: string[]} = {};
     sortedItems.forEach((item) => {
-      const letter = item[0]?.toUpperCase();
+      const letter = item[0].toUpperCase();
       if (!grouped[letter]) grouped[letter] = [];
       grouped[letter].push(item);
     });
@@ -223,65 +223,61 @@ export function FiltersMain({
       </div>
 
       <div className="mt-12 flex flex-col gap-4">
-        {vendors[0] !== '' && (
-          <div>
-            <button
-              className="flex gap-2 py-2 px-4 rounded-lg justify-between cursor-pointer items-center hover:bg-gray-100 transition-colors duration-200 w-full"
-              onClick={() => toggleFilter('brand')}
+        <div>
+          <button
+            className="flex gap-2 py-2 px-4 rounded-lg justify-between cursor-pointer items-center hover:bg-gray-100 transition-colors duration-200 w-full"
+            onClick={() => toggleFilter('brand')}
+          >
+            <span className="capitalize">brand</span>
+            <img
+              src="/plus-icon.svg"
+              alt="plus-icon"
+              className={`transform transition-transform duration-300 ${
+                openFilter === 'brand' ? 'rotate-45' : 'rotate-0'
+              }`}
+            />
+          </button>
+          {openFilter === 'brand' && (
+            <div
+              className="transition-max-height duration-500 ease-in-out max-h-0"
+              style={{maxHeight: openFilter === 'brand' ? '100%' : '0'}}
             >
-              <span className="capitalize">brand</span>
-              <img
-                src="/plus-icon.svg"
-                alt="plus-icon"
-                className={`transform transition-transform duration-300 ${
-                  openFilter === 'brand' ? 'rotate-45' : 'rotate-0'
-                }`}
-              />
-            </button>
-            {openFilter === 'brand' && (
-              <div
-                className="transition-max-height duration-500 ease-in-out max-h-0"
-                style={{maxHeight: openFilter === 'brand' ? '100%' : '0'}}
-              >
-                <div className="mt-2">
-                  {renderDropdownItems(vendors, brand, handleBrandChange)}
-                </div>
+              <div className="mt-2">
+                {renderDropdownItems(vendors, brand, handleBrandChange)}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
-        {productTypes[0] !== '' && (
-          <div>
-            <button
-              className="flex gap-2 py-2 px-4 rounded-lg justify-between cursor-pointer items-center hover:bg-gray-100 transition-colors duration-200 w-full"
-              onClick={() => toggleFilter('productType')}
+        <div>
+          <button
+            className="flex gap-2 py-2 px-4 rounded-lg justify-between cursor-pointer items-center hover:bg-gray-100 transition-colors duration-200 w-full"
+            onClick={() => toggleFilter('productType')}
+          >
+            <span className="capitalize">product type</span>
+            <img
+              src="/plus-icon.svg"
+              alt="plus-icon"
+              className={`transform transition-transform duration-300 ${
+                openFilter === 'productType' ? 'rotate-45' : 'rotate-0'
+              }`}
+            />
+          </button>
+          {openFilter === 'productType' && (
+            <div
+              className="transition-max-height duration-500 ease-in-out max-h-0"
+              style={{maxHeight: openFilter === 'productType' ? '100%' : '0'}}
             >
-              <span className="capitalize">product type</span>
-              <img
-                src="/plus-icon.svg"
-                alt="plus-icon"
-                className={`transform transition-transform duration-300 ${
-                  openFilter === 'productType' ? 'rotate-45' : 'rotate-0'
-                }`}
-              />
-            </button>
-            {openFilter === 'productType' && (
-              <div
-                className="transition-max-height duration-500 ease-in-out max-h-0"
-                style={{maxHeight: openFilter === 'productType' ? '100%' : '0'}}
-              >
-                <div className="mt-2">
-                  {renderDropdownItems(
-                    productTypes,
-                    productType,
-                    handleProductTypeChange,
-                  )}
-                </div>
+              <div className="mt-2">
+                {renderDropdownItems(
+                  productTypes,
+                  productType,
+                  handleProductTypeChange,
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
 
       <button

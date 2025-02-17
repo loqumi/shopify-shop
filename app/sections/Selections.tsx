@@ -43,7 +43,10 @@ export default function Selections({
           <ArrowButton />
         </div>
 
-        <Link className="flex items-center gap-2.5" to="/collections">
+        <Link
+          className="flex items-center gap-2.5"
+          to="/collections/selections"
+        >
           <p className="!font-bold bg-[#D5E882] text-dark-pink !text-base !px-1">
             all selections
           </p>

@@ -21,6 +21,7 @@ import type {GetProductCategoriesQuery} from '~/graphql/admin-api/types';
 import {PRODUCT_QUERY, VARIANTS_QUERY} from '~/graphql/products/ProductQuery';
 import {PRODUCTS_QUERY} from '~/graphql/admin-api/queries/productsQuery';
 import {RELATED_PRODUCT_QUERY} from '~/graphql/products/RelatedProductQuery';
+import CardItem from '~/components/CardItem';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -200,7 +201,7 @@ export default function Product() {
     variants,
   );
 
-  const {title, description, images} = product;
+  const {title, description, images, productType} = product;
 
   return (
     <div className="px-4 md:flex lg:px-[10%] md:mt-6 lg:mt-20 md:gap-6 lg:gap-[10%] mb-12">
@@ -208,7 +209,14 @@ export default function Product() {
         {adminProduct?.productByHandle?.category?.fullName.replaceAll('>', '/')}
       </p>
 
-      <ProductImageViewer images={images.edges} />
+      {productType === 'gift card' ? (
+        <CardItem
+          amount={Number(product.selectedVariant?.price.amount)}
+          handle={product.handle}
+        />
+      ) : (
+        <ProductImageViewer images={images.edges} />
+      )}
 
       <div className="product-main flex-1 ">
         <p className="font-normal text-sm text-[#3C3C4399] hidden md:block">

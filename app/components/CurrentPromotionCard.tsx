@@ -7,7 +7,7 @@ type Props = {
 
 export default function CurrentPromotionCard({promotion}: Props) {
   return (
-    <Link to={`collections/${promotion.handle}`}>
+    <Link to={`collections/promotions/${promotion.handle}`}>
       <img
         src={promotion.image?.url}
         alt="promotion-image"
